@@ -29,7 +29,8 @@ class FetchExchangeCommand extends ContainerAwareCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $om = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-        $operator = new ExchangeOperator($om);
+        $logger = $this->getContainer()->get('logger');
+        $operator = new ExchangeOperator($om, $logger);
 
         $providers = [
             new FirstProvider(),
