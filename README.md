@@ -1,4 +1,4 @@
-#Currency Task
+# Currency Task
 
 ### What has been done?
 
