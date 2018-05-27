@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .currency-box{
+            text-align: center;
+        }
+        .currency-sign {
+            color: #7DB636;
+        }
+        .vertical-center {
+            min-height: 100%;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="row currency-row">
+        {% for currency, ratio in ratios %}
+            {% include 'includes/currency_holder.html.twig' %}
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        let update = function () {
+            $.ajax({
+                url: '/',
+                dataType: 'json',
+                method: 'get',
+                success: function (data) {
+                    $.each(data, function (currency, ratio) {
+                        $('#' + currency).text(ratio);
+                    })
+                },
+                error: function () {
+
+                }
+            });
+        };
+        $(document).ready(function () {
+            setInterval(update, 5000);
+        });
+    </script>
+{% endblock %}
