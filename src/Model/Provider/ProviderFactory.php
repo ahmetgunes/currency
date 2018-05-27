@@ -17,6 +17,8 @@ class ProviderFactory
      * @param array $parameters
      * @return ProviderInterface
      * @throws CurrencyException
+     *
+     * Creates a provider from parameters provided in services.yml
      */
     public static function create(array $parameters): ProviderInterface
     {
