@@ -15,7 +15,7 @@ General summary of the solution
 
 What I would do if it was provided in the task
 
-- I would add an AuthenticatorInterface as a dependency to pass to the providers. Noted in @TODO
+- I would add an AuthenticatorInterface as a dependency to pass to the providers or an authentication proxy (depending on the authentication definitions). Noted in @TODO
 - If the providers were defined stricter, for example only json or xml data, I would add the providers with their definitions to the DB. But with the current definitions this would take away our freedom to operate.
   - Provider: id, name, endpoint, definition_id
   - Definition: symbol_path (result.symbol), euro_symbol, dollar_symbol, gbp_symbol, amount_path
