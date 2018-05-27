@@ -26,28 +26,35 @@ class ExchangeOperator
     protected $logger;
 
     /**
+     * @var ProviderInterface[]
+     */
+    protected $providers;
+
+    /**
      * ExchangeOperator constructor.
      * @param ObjectManager $om
      * @param Logger $logger
+     * @param ProviderInterface[] $providers
      */
-    public function __construct(ObjectManager $om, Logger $logger)
+    public function __construct(ObjectManager $om, Logger $logger, array $providers)
     {
         $this->om = $om;
         $this->logger = $logger;
+        $this->providers = $providers;
     }
 
     /**
-     * @param ProviderInterface $provider
      * @return bool
-     * @throws \Exception
      */
-    public function fetch(ProviderInterface $provider): bool
+    public function operate(): bool
     {
         try {
-            $data = $provider->fetch();
-            $exchange = $provider->createExchange($data);
-            $this->om->persist($exchange);
-            $this->om->flush();
+            foreach ($this->providers as $provider) {
+                $data = $provider->fetch();
+                $exchange = $provider->createExchange($data);
+                $this->om->persist($exchange);
+                $this->om->flush();
+            }
             return true;
         } catch (\Exception $ex) {
             $this->logger->error($ex->getMessage());

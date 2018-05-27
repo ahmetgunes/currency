@@ -14,10 +14,16 @@
 
             display: flex;
             align-items: center;
+            text-align: center;
+        }
+        a.btn {
+            margin-bottom: 50px;
         }
     </style>
 {% endblock %}
 {% block body %}
+    <a href="{{ path('fetch') }}" class="btn btn-success">Fetch the most recent data from API's</a>
+    <br>
     <div class="row currency-row">
         {% for currency, ratio in ratios %}
             {% include 'includes/currency_holder.html.twig' %}

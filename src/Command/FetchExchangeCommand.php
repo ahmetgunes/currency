@@ -9,9 +9,7 @@
 namespace App\Command;
 
 
-use App\Model\Operator\ExchangeOperator;
-use App\Model\Provider\FirstProvider;
-use App\Model\Provider\SecondProvider;
+use App\Model\Operator\OperatorFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,17 +26,7 @@ class FetchExchangeCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $om = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-        $logger = $this->getContainer()->get('logger');
-        $operator = new ExchangeOperator($om, $logger);
-
-        $providers = [
-            new FirstProvider(),
-            new SecondProvider()
-        ];
-
-        foreach ($providers as $provider) {
-            $operator->fetch($provider);
-        }
+        $operator = OperatorFactory::create($this->getContainer());
+        $operator->operate();
     }
 }

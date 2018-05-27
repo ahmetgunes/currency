@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Model\Operator\OperatorFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,19 @@ class DefaultController extends Controller
             return new JsonResponse($ratios);
         } else {
             return $this->render('index.html.twig', ['ratios' => $ratios]);
+        }
+    }
+
+    public function fetch()
+    {
+        try {
+            $operator = OperatorFactory::create($this->container);
+            $operator->operate();
+
+            return $this->redirectToRoute('index');
+        } catch (\Exception $ex) {
+            $this->addFlash('error', '');
+            return $this->redirectToRoute('index');
         }
     }
 }
