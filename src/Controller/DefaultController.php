@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Model\Operator\OperatorFactory;
+use App\Model\Provider\ProviderFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,13 @@ class DefaultController extends Controller
     public function fetch()
     {
         try {
-            $operator = OperatorFactory::create($this->container);
+            $providerParameters = $this->container->getParameter('providers');
+            $providers = [];
+            foreach ($providerParameters as $parameter) {
+                $providers[] = ProviderFactory::create($parameter);
+            }
+
+            $operator = OperatorFactory::create($this->container, $providers);
             $operator->operate();
 
             return $this->redirectToRoute('index');

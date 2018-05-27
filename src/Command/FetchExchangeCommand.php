@@ -10,6 +10,7 @@ namespace App\Command;
 
 
 use App\Model\Operator\OperatorFactory;
+use App\Model\Provider\ProviderFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,7 +27,13 @@ class FetchExchangeCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $operator = OperatorFactory::create($this->getContainer());
+        $providerParameters = $this->getContainer()->getParameter('providers');
+        $providers = [];
+        foreach ($providerParameters as $parameter) {
+            $providers[] = ProviderFactory::create($parameter);
+        }
+
+        $operator = OperatorFactory::create($this->getContainer(), $providers);
         $operator->operate();
     }
 }

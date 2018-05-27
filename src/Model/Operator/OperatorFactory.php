@@ -9,25 +9,17 @@
 namespace App\Model\Operator;
 
 
-use App\Model\Exception\CurrencyException;
-use App\Model\Provider\ProviderFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class OperatorFactory
 {
     /**
      * @param ContainerInterface $container
+     * @param $providers
      * @return ExchangeOperator
-     * @throws CurrencyException
      */
-    public static function create(ContainerInterface $container): ExchangeOperator
+    public static function create(ContainerInterface $container, $providers): ExchangeOperator
     {
-        $providerParameters = $container->getParameter('providers');
-        $providers = [];
-        foreach ($providerParameters as $parameter) {
-            $providers[] = ProviderFactory::create($parameter);
-        }
-
         $om = $container->get('doctrine.orm.default_entity_manager');
         $logger = $container->get('logger');
         $operator = new ExchangeOperator($om, $logger, $providers);
