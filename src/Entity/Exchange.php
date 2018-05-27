@@ -35,11 +35,13 @@ class Exchange
      * @ORM\Column(name="euro", type="float", nullable=false)
      */
     protected $euro;
+
     /**
      * @var float
      * @ORM\Column(name="dollar", type="float", nullable=false)
      */
     protected $dollar;
+
     /**
      * @var float
      * @ORM\Column(name="gbp", type="float", nullable=false)
